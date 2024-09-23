@@ -2,6 +2,7 @@
 
 ## Demos
 - [Moving Square](moving.square)
-- [Interactive Scene](interactive.scene)
+- [Image Demo](image.demo)
+
 ## Projects 
-- Interactive Scene
+- [Interactive Scene](interactive.scene)
