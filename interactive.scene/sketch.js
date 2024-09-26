@@ -4,20 +4,28 @@
 //
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
-let shape = circle();
-let size = 50;
+let theSize = 25;
+let theShape;
+let colPicker;
 
 //setup?
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  background(255);
 }
 
 
 //the actual drawing 
 function draw() {
-  background(255);
+  colPicker = createColorPicker("#000000".color());
+  colPicker.position(10, 50);
+  // Drawing a header with info 
+  fill(160);
+  rect(0, 0, width, height/10);
+  
   noStroke();
-  shape; 
+  fill(colPicker.color());
+  keyPressed();
 }
 
 //Change in size of the pen when mouse wheel is scrolled 
@@ -26,21 +34,30 @@ function mouseWheel() {
     size += 5;
   }
   else{
-    size-+ 5;
+    size-= 5;
   }
 }
 
 
 //Changing shapes when a key is pressed 
 function keyPressed(){
-  if (key = "c"){
-    shape = circle(mouseX, mouseY, size)
-  }
-  if (key = "s"){
-    shape = rect(mouseX, mouseY, size, size)
-  }
-  if (key = "t"){
-    shape = triangle(mouseX, mouseY, mouseX+size, mouseY, mouseX+(size/2), mouseY+size)
+  if (mouseIsPressed){
+    if (key === "c"){
+      circle(mouseX, mouseY, size);
+    }
+    if (key === "s"){
+      rect(mouseX-size/2, mouseY-size/2, size, size);
+    }
+    if (key === "t"){
+      triangle(mouseX, mouseY, mouseX+size, mouseY, mouseX+size/2, mouseY+size);
+    }
+    if (key === "e"){
+      fill(255);
+      circle(mouseX, mouseY, size);
+    }
+    else {
+      fill(0);
+    }
   }
 }
 
