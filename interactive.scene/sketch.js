@@ -12,17 +12,17 @@ let colPicker;
 function setup() {
   createCanvas(windowWidth, windowHeight);
   background(255);
+  colPicker = createColorPicker("black");
+  colPicker.position(10, height/10/3);
 }
 
 
 //the actual drawing 
 function draw() {
-  colPicker = createColorPicker("#000000".color());
-  colPicker.position(10, 50);
+
   // Drawing a header with info 
   fill(160);
   rect(0, 0, width, height/10);
-  
   noStroke();
   fill(colPicker.color());
   keyPressed();
@@ -31,10 +31,10 @@ function draw() {
 //Change in size of the pen when mouse wheel is scrolled 
 function mouseWheel() {
   if (event.delta >0 ){
-    size += 5;
+    theSize += 5;
   }
   else{
-    size-= 5;
+    theSize-= 5;
   }
 }
 
@@ -43,20 +43,20 @@ function mouseWheel() {
 function keyPressed(){
   if (mouseIsPressed){
     if (key === "c"){
-      circle(mouseX, mouseY, size);
+      circle(mouseX, mouseY, theSize);
     }
     if (key === "s"){
-      rect(mouseX-size/2, mouseY-size/2, size, size);
+      rect(mouseX-size/2, mouseY-size/2, theSize, theSize);
     }
     if (key === "t"){
-      triangle(mouseX, mouseY, mouseX+size, mouseY, mouseX+size/2, mouseY+size);
+      triangle(mouseX, mouseY, mouseX+theSize, mouseY, mouseX+theSize/2, mouseY+theSize);
     }
     if (key === "e"){
       fill(255);
-      circle(mouseX, mouseY, size);
+      circle(mouseX, mouseY, theSize);
     }
     else {
-      fill(0);
+      fill(colPicker.color());
     }
   }
 }

@@ -52,3 +52,4 @@ function displaySquare() {
   fill("pink");
   square(x, y, squareSize);
 }
+console.log(state);
