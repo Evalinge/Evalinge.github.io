@@ -46,7 +46,7 @@ function keyPressed(){
       circle(mouseX, mouseY, theSize);
     }
     if (key === "s"){
-      rect(mouseX-size/2, mouseY-size/2, theSize, theSize);
+      rect(mouseX-theSize/2, mouseY-theSize/2, theSize, theSize);
     }
     if (key === "t"){
       triangle(mouseX, mouseY, mouseX+theSize, mouseY, mouseX+theSize/2, mouseY+theSize);
@@ -60,4 +60,3 @@ function keyPressed(){
     }
   }
 }
-
