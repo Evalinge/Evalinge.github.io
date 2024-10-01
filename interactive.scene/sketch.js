@@ -7,25 +7,19 @@
 let theSize = 25;
 let theShape;
 let colPicker;
+let state = "start";
 
 //setup?
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  background(255);
-  colPicker = createColorPicker("black");
-  colPicker.position(10, height/10/3);
 }
 
 
 //the actual drawing 
 function draw() {
-
+  startUp();
   // Drawing a header with info 
-  fill(160);
-  rect(0, 0, width, height/10);
-  noStroke();
-  fill(colPicker.color());
-  keyPressed();
+  isPainting();
 }
 
 //Change in size of the pen when mouse wheel is scrolled 
@@ -61,3 +55,35 @@ function keyPressed(){
   }
 }
 
+function startUp(){
+  if (state === "start"){ 
+  
+    background(0); 
+    fill(255);
+    textAlign("center");  
+    text(`Welcome to Paint
+     Once you are ready to begin please press 'a'. 
+     When you are painting you can use keys to control the shape of your pen. 
+    's' for a square, 't' for a triangle, 'c' for a circle, and 'e' for the   eraser.
+    To change the size of the pen, scroll the mouse wheel.`, width, height  );
+    fill(0);
+    if (mouseIsPressed && state === "start"){
+      state = "painting";
+    }
+  }
+}
+
+function isPainting(){
+  if (state === "painting"){
+    
+    background(255);
+    colPicker = createColorPicker("black");
+    colPicker.position(10, height/10/3);
+    mouseWheel();
+    fill(160);
+    rect(0, 0, width, height/10);
+    noStroke();
+    fill(colPicker.color());
+    keyPressed();
+  }
+}
