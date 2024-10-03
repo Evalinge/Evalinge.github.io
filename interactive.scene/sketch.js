@@ -34,8 +34,8 @@ function draw() {
   // Drawing a header with info
   
   if (isPainting === true){
-  displayPainting();
-  showHeader();
+    displayPainting();
+    showHeader();
   }
   keyPressed();
   
@@ -43,7 +43,7 @@ function draw() {
     displayStart();
   }
   if (isPainting === true){
-  background(255);
+    background(255);
   }
 }
 
@@ -51,9 +51,9 @@ function draw() {
 function mouseWheel() {
   //if (event.delta > 0) {
   //  theSize += 5;
- // } else {
+  // } else {
   //  theSize -= 5;
- // }
+  // }
 }
 
 //Changing shapes when a key is pressed
@@ -78,7 +78,8 @@ function keyPressed() {
     if (key === "e") {
       fill(255);
       circle(mouseX, mouseY, theSize);
-    } else {
+    }
+    else {
       fill(colPicker.color());
     }
   }
@@ -109,14 +110,14 @@ and press "C"`, width / 2, height / 2);
     textAlign(CENTER, CENTER);
     textSize(24);
     text(hex(colPicker.color()));
-    background(255)
+    background(255);
   }
 }
 
 function displayStart() {
-    background(0);
-    displayText();
-    keyPressed();
+  background(0);
+  displayText();
+  keyPressed();
 }
 function displayPainting() {
   fill(colPicker.color());
