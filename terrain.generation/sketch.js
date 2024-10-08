@@ -14,8 +14,8 @@ function draw() {
   background(220);
 
   for (let someRect of terrain){
-  rect(someRect.x, someRect.y, someRect.w, someRect.h)
-}
+    rect(someRect.x, someRect.y, someRect.w, someRect.h);
+  }
 }
 
 function generateTerrain(theWidth){
@@ -24,7 +24,7 @@ function generateTerrain(theWidth){
   for (let x = 0; x<width; x+= theWidth){
     let theHeight = noise(time)*height;
     let someRect = spawnRectangle(x, theHeight, theWidth);
-    terrain.push(someRect)
+    terrain.push(someRect);
     time+= deltaTime;
   }
 }
