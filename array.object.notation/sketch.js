@@ -7,6 +7,12 @@
 let someEllipse;
 let ground = [];
 const NUMBER_OF_ELLIPSES = 1500;
+const AG = -9.8;
+let biker;
+
+function preload(){
+  biker = loadImage("bike.png")
+}
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -21,6 +27,8 @@ function draw() {
     ellipse(someEllipse.x, someEllipse.y, someEllipse.w, someEllipse.h);
 
   }
+  
+  image(biker, mouseX, mouseY, biker.width, biker.height);
 }
 
 
