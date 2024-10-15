@@ -9,9 +9,11 @@ let ground = [];
 const NUMBER_OF_ELLIPSES = 1500;
 const AG = -9.8;
 let biker;
+let bikeX;
+let bikeY;
 
 function preload(){
-  biker = loadImage("bike.png")
+  biker = loadImage("bike.png");
 }
 
 function setup() {
@@ -28,7 +30,7 @@ function draw() {
 
   }
   
-  image(biker, mouseX, mouseY, biker.width, biker.height);
+  displayBiker();
 }
 
 
@@ -50,5 +52,10 @@ function spawnEllipse(leftAt, theHeight, theWidth){
     w: theWidth,
     h: theHeight,
   };
+  bikeY = theEllipse.h;
+  bikeX = theEllipse.x;
   return theEllipse;
+}
+function displayBiker(){
+  image(biker, bikeX, bikeY, biker.width/4, biker.height/4);
 }

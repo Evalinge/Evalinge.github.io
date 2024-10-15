@@ -12,5 +12,5 @@ function setup() {
 
 function draw() {
   background(220);
-  image(patrick, mouseX, mouseY, patrick.width*2, patrick.height*2) 
+  image(patrick, mouseX, mouseY, patrick.width*2, patrick.height*2);
 }
