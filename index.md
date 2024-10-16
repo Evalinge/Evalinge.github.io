@@ -8,6 +8,7 @@
 - [Generative Art](generative.art)
 - [Perline Noise Ball](perlin.ball)
 - [Terrain Generation](terrain.generation)
+- [Sound Effects](sound.effects)
 
 ## Projects 
 - [Interactive Scene](interactive.scene)

@@ -4,13 +4,13 @@
 //
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
-let someEllipse;
 let ground = [];
 const NUMBER_OF_ELLIPSES = 1500;
 const AG = -9.8;
 let biker;
 let bikeX;
 let bikeY;
+let dx;
 
 function preload(){
   biker = loadImage("bike.png");
@@ -26,7 +26,7 @@ function draw() {
   background(220);
 
   for (let someEllipse of ground){
-    ellipse(someEllipse.x, someEllipse.y, someEllipse.w, someEllipse.h);
+    ellipse(someEllipse.l, someEllipse.y, someEllipse.w, someEllipse.h);
 
   }
   
@@ -47,15 +47,24 @@ function generateGround(howWide){
 
 function spawnEllipse(leftAt, theHeight, theWidth){
   let theEllipse = {
-    x: leftAt,
+    l: leftAt,
     y: height - theHeight,
     w: theWidth,
     h: theHeight,
   };
-  bikeY = theEllipse.h;
-  bikeX = theEllipse.x;
-  return theEllipse;
 }
+
 function displayBiker(){
-  image(biker, bikeX, bikeY, biker.width/4, biker.height/4);
+  image(biker, 50, 50, biker.width/4, biker.height/4);
+  keyPressed();
+}
+
+function keyPressed(){
+  if (keyCode === LEFT_ARROW){
+    dx = 2;
+    bikeX += dx;
+  }
+  if (keyCode === RIGHT_ARROW){
+    dx = 2;
+  }
 }
