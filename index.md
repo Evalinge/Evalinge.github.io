@@ -9,6 +9,7 @@
 - [Perline Noise Ball](perlin.ball)
 - [Terrain Generation](terrain.generation)
 - [Sound Effects](sound.effects)
+- [Translate and Rotate](translate.rotate)
 
 ## Projects 
 - [Interactive Scene](interactive.scene)

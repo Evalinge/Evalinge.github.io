@@ -1,16 +1,9 @@
-// Arrays and Object Notation Assignment
-// Evalina Maille
-// 10/08/2024
-//
-// Extra for Experts:
-// - describe what you did to take this project "above and beyond"
+let someEllipse;
 let ground = [];
 const NUMBER_OF_ELLIPSES = 1500;
-const AG = -9.8;
 let biker;
-let bikeX;
-let bikeY;
-let dx;
+let bikeX = 50; 
+
 
 function preload(){
   biker = loadImage("bike.png");
@@ -20,13 +13,14 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   let aWidth = width/NUMBER_OF_ELLIPSES;
   generateGround(aWidth);
+  background(220);
 }
 
 function draw() {
-  background(220);
 
   for (let someEllipse of ground){
-    ellipse(someEllipse.l, someEllipse.y, someEllipse.w, someEllipse.h);
+    ellipse(someEllipse.x, someEllipse.y, someEllipse.w, someEllipse.h);
+    ellipse(someEllipse.x, someEllipse.y, someEllipse.w, someEllipse.h);
 
   }
   
@@ -47,24 +41,25 @@ function generateGround(howWide){
 
 function spawnEllipse(leftAt, theHeight, theWidth){
   let theEllipse = {
-    l: leftAt,
+    x: leftAt,
     y: height - theHeight,
     w: theWidth,
     h: theHeight,
   };
+  return theEllipse;
 }
 
 function displayBiker(){
-  image(biker, 50, 50, biker.width/4, biker.height/4);
   keyPressed();
+  imageMode(CORNER);
+  image(biker, bikeX, ground[bikeX].y+ground[bikeX].h/2, biker.width/4, biker.height/-4*-1);
 }
 
 function keyPressed(){
   if (keyCode === LEFT_ARROW){
-    dx = 2;
-    bikeX += dx;
+    bikeX += 5;
   }
   if (keyCode === RIGHT_ARROW){
-    dx = 2;
+    bikeX-=5;
   }
 }
