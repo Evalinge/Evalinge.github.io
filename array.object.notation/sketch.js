@@ -50,16 +50,18 @@ function spawnEllipse(leftAt, theHeight, theWidth){
 }
 
 function displayBiker(){
+  imageMode(CENTER);
+  image(biker, bikeX+biker.width/4/2, ground[bikeX].y+ground[bikeX].h/2-biker.height/4/2, biker.width/4, biker.height/-4*-1);
   keyPressed();
-  imageMode(CORNER);
-  image(biker, bikeX, ground[bikeX].y+ground[bikeX].h/2, biker.width/4, biker.height/-4*-1);
 }
 
 function keyPressed(){
-  if (keyCode === LEFT_ARROW){
-    bikeX += 5;
-  }
-  if (keyCode === RIGHT_ARROW){
-    bikeX-=5;
+  if (keyIsPressed){
+    if (keyCode === LEFT_ARROW){
+      bikeX += 5;
+    }
+    if (keyCode === RIGHT_ARROW){
+      bikeX-=5;
+    }
   }
 }
