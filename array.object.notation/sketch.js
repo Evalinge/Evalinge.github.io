@@ -1,6 +1,6 @@
 let someEllipse;
 let ground = [];
-const NUMBER_OF_ELLIPSES = 1500;
+const NUMBER_OF_ELLIPSES = 1250;
 let biker;
 let bikeX = 50; 
 
@@ -11,23 +11,16 @@ function preload(){
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  let aWidth = width/NUMBER_OF_ELLIPSES;
-  generateGround(aWidth);
-  background(220);
+  showGround(); 
 }
 
+
 function draw() {
-
-  for (let someEllipse of ground){
-    ellipse(someEllipse.x, someEllipse.y, someEllipse.w, someEllipse.h);
-    ellipse(someEllipse.x, someEllipse.y, someEllipse.w, someEllipse.h);
-
-  }
-  
   displayBiker();
 }
 
 
+//Terrain Generation using perlin noise 
 function generateGround(howWide){
   let time = 0;
   let deltaTime = 0.007;
@@ -36,9 +29,10 @@ function generateGround(howWide){
     let someEllipse = spawnEllipse(x, someHeight, howWide);
     ground.push(someEllipse);
     time+= deltaTime;
-  }
+  };
 }
 
+//Function to be used in terrain generation - uses object notation 
 function spawnEllipse(leftAt, theHeight, theWidth){
   let theEllipse = {
     x: leftAt,
@@ -49,15 +43,20 @@ function spawnEllipse(leftAt, theHeight, theWidth){
   return theEllipse;
 }
 
+//Display the image of the biker
 function displayBiker(){
-  imageMode(CENTER);
-  image(biker, bikeX+biker.width/4/2, ground[bikeX].y+ground[bikeX].h/2, biker.width/4, biker.height/-4*-1);
+  imageMode(CORNER);
+  console.log(ground[bikeX].y + ground[bikeX].h/4+biker.height/4);
+  image(biker, bikeX + biker.width/8, ground[bikeX].y + ground[bikeX].h/4+biker.height/4, biker.width/4, biker.height/4);
   keyPressed();
-  if (bikeX - biker.width/4 <= 0){
+  if (bikeX <= 0){
+    aWidth = width/NUMBER_OF_ELLIPSES;
+    generateGround(aWidth);
     bikeX = width - 10;
-   }
+  };
 }
 
+//Define what happens when user clicks left or right arrow
 function keyPressed(){
   if (keyIsPressed){
     if (keyCode === LEFT_ARROW){
@@ -65,6 +64,17 @@ function keyPressed(){
     }
     if (keyCode === RIGHT_ARROW){
       bikeX +=5;
-    }
-  }
+    };
+  };
+}
+
+function showGround(){
+  let aWidth = width/NUMBER_OF_ELLIPSES;
+  generateGround(aWidth);
+  background(220);
+  //Drawing the terrain 
+  for (let someEllipse of ground){
+    ellipse(someEllipse.x, someEllipse.y, someEllipse.w, someEllipse.h);
+    ellipse(someEllipse.x, someEllipse.y, someEllipse.w, someEllipse.h);
+  };
 }
