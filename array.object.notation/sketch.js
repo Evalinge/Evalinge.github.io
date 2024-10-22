@@ -1,8 +1,12 @@
+// Evalina Maille
+// Array and Object Notation Assignment 
+// No working Extra for Experts. 
+
 let someEllipse;
 let ground = [];
 const NUMBER_OF_ELLIPSES = 1250;
 let biker;
-let bikeX = 50; 
+let bikeX0; 
 
 
 function preload(){
@@ -11,11 +15,17 @@ function preload(){
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  bikeX = width - biker.width/2
+  // This runs much faster, but looks bad. 
   showGround(); 
+ 
 }
 
-
+//display biker and show ground, this was to fix the way the biker is displayed
+//Unfortunately it also makes it incredibly slow. 
 function draw() {
+  // This will run slowly, but hides the trail that the biker leaves behind
+  // showGround();  
   displayBiker();
 }
 
@@ -47,7 +57,7 @@ function spawnEllipse(leftAt, theHeight, theWidth){
 function displayBiker(){
   imageMode(CORNER);
   console.log(ground[bikeX].y + ground[bikeX].h/4+biker.height/4);
-  image(biker, bikeX + biker.width/8, ground[bikeX].y + ground[bikeX].h/4+biker.height/4, biker.width/4, biker.height/4);
+  image(biker, bikeX, ground[bikeX].y - ground[bikeX].h/4+biker.height/4, biker.width/4, biker.height/4);
   keyPressed();
   if (bikeX <= 0){
     aWidth = width/NUMBER_OF_ELLIPSES;
