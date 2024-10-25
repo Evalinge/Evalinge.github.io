@@ -11,6 +11,7 @@
 - [Sound Effects](sound.effects)
 - [Translate and Rotate](translate.rotate)
 - [Grid Demo](grid.demo)
+- [Conway's Game of Life](game.of.life)
 
 ## Projects 
 - [Interactive Scene](interactive.scene)
