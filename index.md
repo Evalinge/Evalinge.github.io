@@ -12,7 +12,9 @@
 - [Translate and Rotate](translate.rotate)
 - [Grid Demo](grid.demo)
 - [Conway's Game of Life](game.of.life)
+- [Rectangle Grid Demo](rect.grid.demo) 
 
 ## Projects 
 - [Interactive Scene](interactive.scene)
 - [Arrays and Object Notation](array.object.notation)
+- [2D Array Assignment](2d.array.assignment)
