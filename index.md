@@ -13,6 +13,7 @@
 - [Grid Demo](grid.demo)
 - [Conway's Game of Life](game.of.life)
 - [Rectangle Grid Demo](rect.grid.demo) 
+- [Character Grid Demo](Character.grid.demo/)
 
 ## Projects 
 - [Interactive Scene](interactive.scene)

@@ -37,7 +37,6 @@ function displayGrid(){
 
 function generateRandomGrid(theCols, theRows){
   let newGrid = []; 
-  let state; 
   for (let y = 0; y < theRows; y++){
     newGrid.push([]);
     for (let x = 0; x < theCols; x++){
