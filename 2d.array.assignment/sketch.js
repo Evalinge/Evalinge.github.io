@@ -1,22 +1,31 @@
 // 2D Array Assignment 
 // October 28, 2024 
 // 
-const CELL_SIZE = 40; 
+
+const GRID_SIZE = 40; 
+let cellSize; 
 let grid; 
 let rows; 
 let cols; 
+const EMPTY_TILE = 0;
+const LASER = 1; 
+const DIAMOND = 2; 
 
 function preload(){
-  theMine = loadImage("theMine.png");
+  theLaser = loadImage("laser.png");
   
 }
 
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  cols = floor(height / CELL_SIZE);
-  rows = floor(width / CELL_SIZE); 
-  grid = createGrid(cols, rows);
+  if (height<width){
+    cellSize = height/GRID_SIZE;
+  }
+  else{
+    cellSize = width/GRID_SIZE;
+  }
+  grid = createGrid(GRID_SIZE, GRID_SIZE);
 }
 
 function draw() {
@@ -24,19 +33,19 @@ function draw() {
   showGrid();
 }
 
-function createGrid(thecols, therows){
+function createGrid(GRID_SIZE, GRID_SIZE){
   let newGrid = []; 
-  for (let y = 0; y < thecols; y++){
+  for (let y = 0; y < GRID_SIZE; y++){
     newGrid.push([]);
-    for (let x = 0; x <therows; x++){
-      if (random(100) <= 20){
-        newGrid[y].push(3);
+    for (let x = 0; x < GRID_SIZE; x++){
+      if (random(0, 100) <= 25){
+        newGrid[y].push(LASER);
       }
-      else if (random(100) >20 && random(100) <= 40){
-        newGrid[y].push(1);
+      else if (random(0, 100) > 25 && random(100) <= 40){
+        newGrid[y].push(DIAMOND);
       }
-      else {
-        newGrid[y].push(2);
+      else{
+        newGrid[y].push(EMPTY_TILE);
       }
     }
   }
@@ -44,18 +53,17 @@ function createGrid(thecols, therows){
 }
 
 function showGrid(){
-  for (let y = 0; y<rows; y++){
-    for (let x = 0; x<cols; x++){
-      if (grid[y][x] === 3){
-        image(theMine, width/2, height/2, CELL_SIZE, CELL_SIZE);
+  for (let y = 0; y<GRID_SIZE; y++)
+    for (let x = 0; x<GRID_SIZE; x++){
+      if (grid[y][x] === LASER){
+        image(theLaser, x*cellSize, y*cellSize, cellSize, cellSize);
       }
-      else if (grid[y][x] === 1){
+      else if (grid[y][x] === EMPTY_TILE){
         fill(0);
       }
-      else {
-        fill(255); 
+      else if(grid[y][x] === DIAMOND){
+        fill("blue"); 
       }
-      square(x*CELL_SIZE, y*CELL_SIZE, CELL_SIZE);
+      rect(x*cellSize, y*cellSize, cellSize, cellSize);
     }
   }
-}
