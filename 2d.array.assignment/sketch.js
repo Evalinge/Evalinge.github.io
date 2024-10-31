@@ -8,18 +8,17 @@ const LASER = 1;
 const DIAMOND = 2; 
 const MASK = 3; 
 
-
+let shouldToggleNeighbours = false;
 let cellSize; 
 let grid; 
 let coveringGrid;
-let isGridCovered;
-let maskedCell = {
-  isMasked: true,
-  value: MASK,
-};
+let gemCounter = 0;
+
 
 function preload(){
-  theLaser = loadImage("theLaser.png");
+  theHole = loadImage("BlackGroundHole.png");
+  floorTile = loadImage("FloorTile.jpg");
+  theGem = loadImage("greenGem.png");
 }
 
 
@@ -33,7 +32,6 @@ function setup() {
   }
   grid = createGrid(GRID_SIZE, GRID_SIZE);
   coveringGrid = createCoveringGrid(GRID_SIZE, GRID_SIZE);
-  isGridcovered = createStateGrid(GRID_SIZE, GRID_SIZE); 
 }
 
 function draw() {
@@ -66,13 +64,17 @@ function showGrid(){
     for (let x = 0; x<GRID_SIZE; x++){
       if (grid[y][x] === LASER){
         noFill();
-        image(theLaser, x*cellSize, y*cellSize, cellSize, cellSize);
+        image(floorTile, x*cellSize, y*cellSize, cellSize, cellSize);
+        image(theHole, x*cellSize, y*cellSize, cellSize, cellSize);
       }
       else if (grid[y][x] === EMPTY_TILE){
-        fill(0);
+        noFill();
+        image(floorTile, x*cellSize, y*cellSize, cellSize, cellSize);
       }
       else if(grid[y][x] === DIAMOND){
-        fill("blue"); 
+        noFill();
+        image(floorTile, x*cellSize, y*cellSize, cellSize, cellSize);
+        image(theGem, x*cellSize, y*cellSize, cellSize, cellSize); 
       }
       
       rect(x*cellSize, y*cellSize, cellSize, cellSize);
@@ -85,31 +87,20 @@ function createCoveringGrid(rows, cols){
   for (let y = 0; y < cols; y++){
     newCoveringGrid.push([]);
     for (let x = 0; x < rows; x++){
-      newCoveringGrid[y].push(maskedCell.value);
+      newCoveringGrid[y].push(MASK);
     }
   }
   return newCoveringGrid;
-}
-
-function createStateGrid(rows, cols){
-  let newisGridCovered = [];
-  for (let y = 0; y <cols; y++){
-    newisGridCovered.push([]);
-    for (let x = 0; x < rows; x++){
-      newisGridCovered[y].push(maskedCell.isMasked);
-    }
-  }
-  return newisGridCovered;
 }
 
 
 function showCoveringGrid(){
   for (let y = 0; y<GRID_SIZE; y++) {
     for (let x = 0; x<GRID_SIZE; x++){
-      if (coveringGrid[y][x] === MASK && isGridCovered[y][x] === true){
+      if (coveringGrid[y][x] === MASK){
         fill("lightgray"); 
       }
-      else if (coveringGrid[y][x] === MASK && cell.isMasked === false){
+      else if (coveringGrid[y][x] !== MASK){
         noFill(); 
       }
       rect(x*cellSize, y*cellSize, cellSize, cellSize);
@@ -117,8 +108,34 @@ function showCoveringGrid(){
   }
 }
 
-function mousePressed(){
+
+function mousePressed() {
+  let x = Math.floor(mouseX/cellSize);
+  let y = Math.floor(mouseY/cellSize);
+
   if (mouseButton === LEFT){
-    coveringGrid[floor(mouseX)][floor(mouseY)].cell.isMasked = !cell.isMasked; 
+  //toggle self
+    toggleCell(x, y);
+
+    //toggle neighbours
+    if (shouldToggleNeighbours) {
+      toggleCell(x + 1, y);
+      toggleCell(x - 1, y);
+      toggleCell(x, y + 1);
+      toggleCell(x, y - 1);
+    }
+    if (coveringGrid[y][x] === DIAMOND){
+      grid[y][x] = EMPTY_TILE;
+      gemCounter += 1;
+    }
+  }
+}
+
+function toggleCell(x, y) {
+  //make sure the cell you're toggling is in the grid
+  if (x >= 0 && y >= 0 && x < GRID_SIZE && y < GRID_SIZE) {
+    if (coveringGrid[y][x] === MASK) {
+      coveringGrid[y][x] = grid[y][x];
+    }
   }
 }
