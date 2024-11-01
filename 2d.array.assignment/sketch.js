@@ -48,7 +48,7 @@ function createGrid(rows, cols){
       if (random(0, 100) <= 15){
         newGrid[y].push(LASER);
       }
-      else if (random(0, 100) > 15 && random(100) <= 25){
+      else if (random(0, 100) > 15 && random(100) <= 22){
         newGrid[y].push(DIAMOND);
       }
       else{
@@ -124,10 +124,10 @@ function mousePressed() {
       toggleCell(x, y + 1);
       toggleCell(x, y - 1);
     }
-    if (coveringGrid[y][x] === DIAMOND){
-      grid[y][x] = EMPTY_TILE;
-      gemCounter += 1;
-    }
+  }
+  if (coveringGrid[y][x] === DIAMOND && mouseButton === RIGHT){
+    grid[y][x] = EMPTY_TILE;
+    gemCounter += 1;
   }
 }
 
