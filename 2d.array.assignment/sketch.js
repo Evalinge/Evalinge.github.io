@@ -55,6 +55,24 @@ function createGrid(rows, cols){
       else{
         newGrid[y].push(EMPTY_TILE);
       }
+      //count it's neighbours
+      let holes = 0;
+      let diamonds = 0;
+      for (let i = -1; i <= 1; i++) {
+        for (let j = -1; j <= 1; j++) {
+          //don't fall of the edge
+          console.log(y+i >= 0, y+i < GRID_SIZE, x+j >= 0, x+j < GRID_SIZE);//, grid[y+i][x+i] === HOLE);
+          console.log(y+i >= 0 && y+i < GRID_SIZE && x+j >= 0 && x+j < GRID_SIZE);// && grid[y+i][x+i] === HOLE);
+          if (y+i >= 0 && y+i < GRID_SIZE && x+j >= 0 && x+j < GRID_SIZE && grid[y+i][x+i] === HOLE) {
+            console.log(y, i, x, j, grid[y+i][x+i]);
+            holes += grid[y+i][x+j];
+            console.log(holes);
+          }
+          // if (y+i >= 0 && y+i < GRID_SIZE && x+j >= 0 && x+j < GRID_SIZE && grid[y+i][x+i] === DIAMOND) {
+          //   holes += grid[y+i][x+j];
+          // }
+        }
+      }
     }
   }
   return newGrid;
@@ -63,12 +81,16 @@ function createGrid(rows, cols){
 function showGrid(){
   for (let y = 0; y<GRID_SIZE; y++) {
     for (let x = 0; x<GRID_SIZE; x++){
+      
+      // Display based on state!
       if (grid[y][x] === HOLE){
         image(floorTile, x*cellSize, y*cellSize, cellSize, cellSize);
         image(theHole, x*cellSize, y*cellSize, cellSize, cellSize);
       }
       else if (grid[y][x] === EMPTY_TILE){
         image(floorTile, x*cellSize, y*cellSize, cellSize, cellSize);
+        fill(0);
+        text(holes, x*cellSize - cellSize/2, y*cellSize - cellSize/2);
       }
       else if(grid[y][x] === DIAMOND){
         image(floorTile, x*cellSize, y*cellSize, cellSize, cellSize);
@@ -76,6 +98,7 @@ function showGrid(){
       }
       noFill();
       rect(x*cellSize, y*cellSize, cellSize, cellSize);
+      textAlign(CENTER, CENTER);
     }
   }
 }
@@ -113,7 +136,9 @@ function mousePressed() {
 
   if (mouseButton === LEFT){
   //toggle self
-    toggleCell(x, y);
+    if (grid[y][x] === EMPTY_TILE || grid[y][x] === DIAMOND){
+      toggleCell(x, y);
+    }
   }
   if (coveringGrid[y][x] === DIAMOND && mouseButton === RIGHT){
     grid[y][x] = EMPTY_TILE;
