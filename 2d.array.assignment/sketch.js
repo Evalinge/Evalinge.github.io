@@ -13,6 +13,8 @@ let cellSize;
 let grid; 
 let coveringGrid;
 let gemCounter = 0;
+let holes = 0;
+let diamonds = 0;
 
 
 function preload(){
@@ -55,26 +57,28 @@ function createGrid(rows, cols){
       else{
         newGrid[y].push(EMPTY_TILE);
       }
-      //count it's neighbours
-      let holes = 0;
-      let diamonds = 0;
+      
+    }
+  }
+  for (let oy = 0; oy < cols; oy++){
+    for (let ox = 0; ox < rows; ox++){
+      //count it's neighbouring holes and diamonds
       for (let i = -1; i <= 1; i++) {
         for (let j = -1; j <= 1; j++) {
           //don't fall of the edge
-          console.log(y+i >= 0, y+i < GRID_SIZE, x+j >= 0, x+j < GRID_SIZE);//, grid[y+i][x+i] === HOLE);
-          console.log(y+i >= 0 && y+i < GRID_SIZE && x+j >= 0 && x+j < GRID_SIZE);// && grid[y+i][x+i] === HOLE);
-          if (y+i >= 0 && y+i < GRID_SIZE && x+j >= 0 && x+j < GRID_SIZE && grid[y+i][x+i] === HOLE) {
-            console.log(y, i, x, j, grid[y+i][x+i]);
-            holes += grid[y+i][x+j];
-            console.log(holes);
+          if (oy+i > -1 && oy+i < GRID_SIZE && ox+j > -1 && ox+j < GRID_SIZE) {
+            if (newGrid[oy+i][ox+j] === HOLE){
+              holes += 1;
+            }
+            if (newGrid[oy+i][ox+j] === DIAMOND){
+              diamonds += 1;
+            }
           }
-          // if (y+i >= 0 && y+i < GRID_SIZE && x+j >= 0 && x+j < GRID_SIZE && grid[y+i][x+i] === DIAMOND) {
-          //   holes += grid[y+i][x+j];
-          // }
         }
       }
     }
   }
+  
   return newGrid;
 }
 
@@ -89,12 +93,16 @@ function showGrid(){
       }
       else if (grid[y][x] === EMPTY_TILE){
         image(floorTile, x*cellSize, y*cellSize, cellSize, cellSize);
-        fill(0);
-        text(holes, x*cellSize - cellSize/2, y*cellSize - cellSize/2);
+        fill(0);if (holes > 0){
+          text(holes, x*cellSize - cellSize/2, y*cellSize - cellSize/2);
+        }
       }
       else if(grid[y][x] === DIAMOND){
         image(floorTile, x*cellSize, y*cellSize, cellSize, cellSize);
         image(theGem, x*cellSize, y*cellSize, cellSize, cellSize); 
+        if (holes > 0){
+          text(holes, x*cellSize - cellSize/2, y*cellSize - cellSize/2);
+        }
       }
       noFill();
       rect(x*cellSize, y*cellSize, cellSize, cellSize);
