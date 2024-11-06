@@ -25,17 +25,16 @@ function preload(){
 
 function setup() {
   if (windowWidth<windowHeight){
-    createCanvas(windowWidth, windowWidth);
+    createCanvas(windowWidth*0.8, windowWidth*0.8);
   }
   else{
-    createCanvas(windowHeight, windowHeight);
+    createCanvas(windowHeight*0.8, windowHeight*0.8);
   }
   cellSize = height/GRID_SIZE;
   grid = generateRandomGrid(GRID_SIZE, GRID_SIZE); 
 
   //add player to grid
   grid[player.y][player.x] = PLAYER_TILE; 
-  
   mousePressed();
   keyPressed(); 
 }
@@ -163,9 +162,9 @@ function toggleCell(x, y){
 function windowResized(){
   resizeCanvas(windowWidth, windowHeight);
   if (key === "r"){
-    grid = generateRandomGrid(GRID_SIZE, GRID_SIZE);
+    grid = generateRandomGrid(GRID_SIZE*0.8, GRID_SIZE*0.8);
   }
   if (key === "e"){
-    grid = generateEmptyGrid(GRID_SIZE, GRID_SIZE);
+    grid = generateEmptyGrid(GRID_SIZE*0.8, GRID_SIZE*0.8);
   }
 }

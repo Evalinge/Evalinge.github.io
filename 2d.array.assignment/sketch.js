@@ -34,6 +34,7 @@ function setup() {
   }
   grid = createGrid(GRID_SIZE, GRID_SIZE);
   coveringGrid = createCoveringGrid(GRID_SIZE, GRID_SIZE);
+  holes, diamonds = countStuff(GRID_SIZE, grid);
 }
 
 function draw() {
@@ -59,26 +60,7 @@ function createGrid(rows, cols){
       }
       
     }
-  }
-  for (let oy = 0; oy < cols; oy++){
-    for (let ox = 0; ox < rows; ox++){
-      //count it's neighbouring holes and diamonds
-      for (let i = -1; i <= 1; i++) {
-        for (let j = -1; j <= 1; j++) {
-          //don't fall of the edge
-          if (oy+i > -1 && oy+i < GRID_SIZE && ox+j > -1 && ox+j < GRID_SIZE) {
-            if (newGrid[oy+i][ox+j] === HOLE){
-              holes += 1;
-            }
-            if (newGrid[oy+i][ox+j] === DIAMOND){
-              diamonds += 1;
-            }
-          }
-        }
-      }
-    }
-  }
-  
+  }  
   return newGrid;
 }
 
@@ -147,6 +129,9 @@ function mousePressed() {
     if (grid[y][x] === EMPTY_TILE || grid[y][x] === DIAMOND){
       toggleCell(x, y);
     }
+    if (grid[y][x] === HOLE){
+      
+    }
   }
   if (coveringGrid[y][x] === DIAMOND && mouseButton === RIGHT){
     grid[y][x] = EMPTY_TILE;
@@ -163,9 +148,7 @@ function toggleCell(x, y) {
   }
 }
 
-//function countNeighbours(x, y){
 
-//}
 function keyPressed(){
   if (key === "u"){
     for (let y = 0; y<GRID_SIZE; y++) {
@@ -174,4 +157,27 @@ function keyPressed(){
       }
     }
   }
+}
+
+function countStuff(GRID_SIZE, theGrid){
+  //look at every cell
+  for (let y = 0; y < GRID_SIZE; y++) {
+    for (let x = 0; x < GRID_SIZE; x++) {
+      //count it's neighbours
+      let neighbours = 0;
+
+      for (let i = -1; i <= 1; i++) {
+        for (let j = -1; j <= 1; j++) {
+          //don't fall of the edge
+          if (y+i >= 0 && y+i < GRID_SIZE && x+j >= 0 && x+j < GRID_SIZE && theGrid[y+i][x+j] === HOLE) {
+            holes += 1;
+          }
+          else if (y+i >= 0 && y+i < GRID_SIZE && x+j >= 0 && x+j < GRID_SIZE && theGrid[y+i][x+j] === DIAMOND) {
+            diamonds += 1;
+          }
+        }
+      }
+    }
+  }
+  return holes, diamonds; 
 }
