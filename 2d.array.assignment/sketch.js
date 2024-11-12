@@ -75,15 +75,22 @@ function showGrid(){
       }
       else if (grid[y][x] === EMPTY_TILE){
         image(floorTile, x*cellSize, y*cellSize, cellSize, cellSize);
-        fill(0);if (holes > 0){
+        fill(0);
+        if (holes > 0){
           text(holes, x*cellSize - cellSize/2, y*cellSize - cellSize/2);
+        }
+        if (diamonds > 0){
+          text(diamonds, x*cellSize - cellSize/12, y*cellSize - cellSize/12);
         }
       }
       else if(grid[y][x] === DIAMOND){
         image(floorTile, x*cellSize, y*cellSize, cellSize, cellSize);
         image(theGem, x*cellSize, y*cellSize, cellSize, cellSize); 
         if (holes > 0){
-          text(holes, x*cellSize - cellSize/2, y*cellSize - cellSize/2);
+          text(holes, x*cellSize - cellSize/2, y*cellSize - cellSize/8);
+        }
+        if (diamonds > 0){
+          text(diamonds, x*cellSize - cellSize/4, y*cellSize - cellSize/12);
         }
       }
       noFill();
@@ -161,18 +168,21 @@ function keyPressed(){
 
 function countStuff(GRID_SIZE, theGrid){
   //look at every cell
+  
   for (let y = 0; y < GRID_SIZE; y++) {
     for (let x = 0; x < GRID_SIZE; x++) {
       //count it's neighbours
-      let neighbours = 0;
-
+      holes = 0;
+      diamonds = 0;
+      
       for (let i = -1; i <= 1; i++) {
         for (let j = -1; j <= 1; j++) {
+          
           //don't fall of the edge
           if (y+i >= 0 && y+i < GRID_SIZE && x+j >= 0 && x+j < GRID_SIZE && theGrid[y+i][x+j] === HOLE) {
             holes += 1;
           }
-          else if (y+i >= 0 && y+i < GRID_SIZE && x+j >= 0 && x+j < GRID_SIZE && theGrid[y+i][x+j] === DIAMOND) {
+          if (y+i >= 0 && y+i < GRID_SIZE && x+j >= 0 && x+j < GRID_SIZE && theGrid[y+i][x+j] === DIAMOND) {
             diamonds += 1;
           }
         }
