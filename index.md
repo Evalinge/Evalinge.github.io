@@ -20,3 +20,6 @@
 - [Interactive Scene](interactive.scene)
 - [Arrays and Object Notation](array.object.notation)
 - [2D Array Assignment](2d.array.assignment)
+
+## CompSci Club
+- [Creating Game Engines]{game.engine.with.bennett}
