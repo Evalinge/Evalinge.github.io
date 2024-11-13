@@ -5,7 +5,7 @@
 const GRID_SIZE = 20; 
 const EMPTY_TILE = 0;
 const HOLE = 1; 
-const DIAMOND = 2; 
+const GEM = 2; 
 const MASK = 3; 
 
 let shouldToggleNeighbours = false;
@@ -14,13 +14,16 @@ let grid;
 let coveringGrid;
 let gemCounter = 0;
 let holes = 0;
-let diamonds = 0;
+let gems = 0;
+let holeGrid; 
+let gemGrid; 
 
 
 function preload(){
   theHole = loadImage("BlackGroundHole.png");
   floorTile = loadImage("FloorTile.jpg");
   theGem = loadImage("greenGem.png");
+  theFlag = loadImage("warningFlag.jpg");
 }
 
 
@@ -34,7 +37,8 @@ function setup() {
   }
   grid = createGrid(GRID_SIZE, GRID_SIZE);
   coveringGrid = createCoveringGrid(GRID_SIZE, GRID_SIZE);
-  holes, diamonds = countStuff(GRID_SIZE, grid);
+  gemGrid = countGems(GRID_SIZE, GRID_SIZE, grid); 
+  holeGrid = countHoles(GRID_SIZE, GRID_SIZE, grid); 
 }
 
 function draw() {
@@ -53,7 +57,7 @@ function createGrid(rows, cols){
         newGrid[y].push(HOLE);
       }
       else if (random(0, 100) > 20 && random(100) <= 25){
-        newGrid[y].push(DIAMOND);
+        newGrid[y].push(GEM);
       }
       else{
         newGrid[y].push(EMPTY_TILE);
@@ -76,21 +80,21 @@ function showGrid(){
       else if (grid[y][x] === EMPTY_TILE){
         image(floorTile, x*cellSize, y*cellSize, cellSize, cellSize);
         fill(0);
-        if (holes > 0){
-          text(holes, x*cellSize - cellSize/2, y*cellSize - cellSize/2);
+        if (holeGrid[y][x] > 0){
+          text(holeGrid[y][x], x*cellSize - cellSize/2, y*cellSize - cellSize/2);
         }
-        if (diamonds > 0){
-          text(diamonds, x*cellSize - cellSize/12, y*cellSize - cellSize/12);
+        if (gemGrid[y][x] > 0){
+          text(gemGrid[y][x], x*cellSize - cellSize/12, y*cellSize - cellSize/12);
         }
       }
-      else if(grid[y][x] === DIAMOND){
+      else if(grid[y][x] === GEM){
         image(floorTile, x*cellSize, y*cellSize, cellSize, cellSize);
         image(theGem, x*cellSize, y*cellSize, cellSize, cellSize); 
-        if (holes > 0){
-          text(holes, x*cellSize - cellSize/2, y*cellSize - cellSize/8);
+        if (holeGrid[y][x] > 0){
+          text(holeGrid[y][x], x*cellSize - cellSize/2, y*cellSize - cellSize/8);
         }
-        if (diamonds > 0){
-          text(diamonds, x*cellSize - cellSize/4, y*cellSize - cellSize/12);
+        if (gemGrid[y][x] > 0){
+          text(gemGrid[y][x], x*cellSize - cellSize/4, y*cellSize - cellSize/12);
         }
       }
       noFill();
@@ -133,14 +137,14 @@ function mousePressed() {
 
   if (mouseButton === LEFT){
   //toggle self
-    if (grid[y][x] === EMPTY_TILE || grid[y][x] === DIAMOND){
+    if (grid[y][x] === EMPTY_TILE || grid[y][x] === GEM){
       toggleCell(x, y);
     }
     if (grid[y][x] === HOLE){
       
     }
   }
-  if (coveringGrid[y][x] === DIAMOND && mouseButton === RIGHT){
+  if (coveringGrid[y][x] === GEM && mouseButton === RIGHT){
     grid[y][x] = EMPTY_TILE;
     gemCounter += 1;
   }
@@ -166,28 +170,48 @@ function keyPressed(){
   }
 }
 
-function countStuff(GRID_SIZE, theGrid){
-  //look at every cell
-  
-  for (let y = 0; y < GRID_SIZE; y++) {
-    for (let x = 0; x < GRID_SIZE; x++) {
-      //count it's neighbours
-      holes = 0;
-      diamonds = 0;
-      
+function countGems(rows, cols, theGrid){
+  let newGemGrid = []; 
+  for (let y = 0; y < cols; y++){
+    newGemGrid.push([]);
+    for (let x = 0; x < rows; x++){
+      gems = 0;
       for (let i = -1; i <= 1; i++) {
         for (let j = -1; j <= 1; j++) {
-          
-          //don't fall of the edge
-          if (y+i >= 0 && y+i < GRID_SIZE && x+j >= 0 && x+j < GRID_SIZE && theGrid[y+i][x+j] === HOLE) {
-            holes += 1;
-          }
-          if (y+i >= 0 && y+i < GRID_SIZE && x+j >= 0 && x+j < GRID_SIZE && theGrid[y+i][x+j] === DIAMOND) {
-            diamonds += 1;
+          if (y+i >= 0 && y+i < cols && x+j >= 0 && x+j < rows && theGrid[y+i][x+j] === GEM) {
+            gems += 1;
           }
         }
       }
+      //Don't count yourself! 
+      if (grid[y][x] === GEM){ 
+        gems -= 1; 
+      }
+      newGemGrid[y].push(gems); 
     }
-  }
-  return holes, diamonds; 
+  }  
+  return newGemGrid;
+}
+
+function countHoles(rows, cols, theGrid){
+  let newHoleGrid = []; 
+  for (let y = 0; y < cols; y++){
+    newHoleGrid.push([]);
+    for (let x = 0; x < rows; x++){
+      holes = 0;
+      for (let i = -1; i <= 1; i++) {
+        for (let j = -1; j <= 1; j++) {
+          if (y+i >= 0 && y+i < cols && x+j >= 0 && x+j < rows && theGrid[y+i][x+j] === HOLE) {
+            holes += 1;
+          }
+        }
+      }
+      //Don't count yourself! 
+      if (grid[y][x] === HOLE){
+        holes -= 1; 
+      }
+      newHoleGrid[y].push(holes); 
+    }
+  }  
+  return newHoleGrid;
 }

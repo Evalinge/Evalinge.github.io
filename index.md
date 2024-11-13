@@ -14,6 +14,7 @@
 - [Conway's Game of Life](game.of.life)
 - [Rectangle Grid Demo](rect.grid.demo) 
 - [Character Grid Demo](Character.grid.demo/)
+- [OOP Walker Demo](oop.walker.demo)
 
 
 ## Projects 
@@ -22,4 +23,4 @@
 - [2D Array Assignment](2d.array.assignment)
 
 ## CompSci Club
-- [Creating Game Engines]{game.engine.with.bennett}
+- [Creating Game Engines](game.engine.with.bennett)
