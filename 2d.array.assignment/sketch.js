@@ -2,6 +2,8 @@
 // October 28, 2024 
 // 
 
+
+//Naming variables and constants
 const GRID_SIZE = 20; 
 const EMPTY_TILE = 0;
 const HOLE = 1; 
@@ -29,12 +31,15 @@ function preload(){
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  background(220);
+
   if (height<width){
     cellSize = height/GRID_SIZE;
   }
   else{
     cellSize = width/GRID_SIZE;
   }
+  //determine arrays
   grid = createGrid(GRID_SIZE, GRID_SIZE);
   coveringGrid = createCoveringGrid(GRID_SIZE, GRID_SIZE);
   gemGrid = countGems(GRID_SIZE, GRID_SIZE, grid); 
@@ -42,7 +47,7 @@ function setup() {
 }
 
 function draw() {
-  background(220);
+ 
   showGrid();
   showCoveringGrid(); 
   keyPressed();
@@ -79,22 +84,26 @@ function showGrid(){
       }
       else if (grid[y][x] === EMPTY_TILE){
         image(floorTile, x*cellSize, y*cellSize, cellSize, cellSize);
-        fill(0);
-        if (holeGrid[y][x] > 0){
-          text(holeGrid[y][x], x*cellSize - cellSize/2, y*cellSize - cellSize/2);
+        textStyle(BOLD);
+        if (holeGrid[y][x] >= 0){
+          fill("red"); 
+          text(holeGrid[y][x], x*cellSize - 3*cellSize/4, y*cellSize - 3*cellSize/4);
         }
-        if (gemGrid[y][x] > 0){
-          text(gemGrid[y][x], x*cellSize - cellSize/12, y*cellSize - cellSize/12);
+        if (gemGrid[y][x] >= 0){
+          fill("blue");
+          text(gemGrid[y][x], x*cellSize - cellSize/4, y*cellSize - cellSize/4);
         }
       }
       else if(grid[y][x] === GEM){
         image(floorTile, x*cellSize, y*cellSize, cellSize, cellSize);
         image(theGem, x*cellSize, y*cellSize, cellSize, cellSize); 
         if (holeGrid[y][x] > 0){
-          text(holeGrid[y][x], x*cellSize - cellSize/2, y*cellSize - cellSize/8);
+          fill("red");
+          text(holeGrid[y][x], x*cellSize - 3*cellSize/4, y*cellSize - 3*cellSize/4);
         }
         if (gemGrid[y][x] > 0){
-          text(gemGrid[y][x], x*cellSize - cellSize/4, y*cellSize - cellSize/12);
+          fill("blue");
+          text(gemGrid[y][x], x*cellSize - cellSize/4, y*cellSize - cellSize/4);
         }
       }
       noFill();
