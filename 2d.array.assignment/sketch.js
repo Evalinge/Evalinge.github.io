@@ -1,7 +1,11 @@
 // 2D Array Assignment 
 // October 28, 2024 
-// 
-
+// Evalina Maille
+// GemSweeper (Minesweeper inspired)
+// No extra for experts, but I did encorporate 2d arrays, sound, images,
+// and state variables. (much better than the state variable assignment.)
+// Images and sounds from OpenGameArt.org
+// You can place flags but cannot take them back as I ran out of time. 
 
 //Naming variables and constants
 const GRID_SIZE = 10; 
@@ -30,11 +34,13 @@ function preload(){
   theGem = loadImage("greenGem.png");
   theFlag = loadImage("warningFlag.jpg");
   slipSound = loadSound("slipSound.wav");
+  pickUp = loadSound("dingSound.mp3");
 }
 
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+  document.addEventListener("contextmenu", event => event.preventDefault());
   background(255);
 
   if (height<width){
@@ -60,18 +66,22 @@ function draw() {
     background(255);
     showGrid();
     showCoveringGrid(); 
- }
- if (state === "lost"){
-  gameOver();
- }
+  }
+  if (state === "lost"){
+    gameOver();
+  }
  
   keyPressed();
 }
 
 function gameOver() {
   background(0);
+  textWrap(WORD);
+  textAlign(CENTER);
   fill("red");
-  text("You've been trapped! you collected " + gemCounter + " gems!", 0, height, width, height);
+  textSize(30);
+  text("You've been trapped! You collected " + gemCounter + " gems!"
+    + " Please refresh the page if you wish to try again...", 0, height/4, width, height/2);  
 }
 
 function showStartScreen() {
@@ -82,8 +92,8 @@ function showStartScreen() {
   textSize(30);
   text("Welcome to Gem Sweeper you are a ninja avoiding hole traps and collecting gems!"
     + " Red numbers indicate neighbouring holes and the green numbers indicate neighbouring gems."
-    + " Left click to reveal cells, and right click to flag a mine, or collect a gem.", 0, height/4, width, height/2);  
-  button()
+    + " Left click to reveal cells, and right click to flag a hole, or collect a gem.", 0, height/4, width, height/2);  
+  button();
 }
 
 function button() {
@@ -114,14 +124,14 @@ function createGrid(rows, cols){
   for (let y = 0; y < cols; y++){
     newGrid.push([]);
     for (let x = 0; x < rows; x++){
-      //randomly decide their state
+      //randomly decide their state and create an array to store them
       if (random(100) <= 20){
         newGrid[y].push(HOLE);
       }
       else if (random(100) > 20 && random(100) <= 25){
         newGrid[y].push(GEM);
       }
-      else if (random(100) > 25) {
+      else{
         newGrid[y].push(EMPTY_TILE);
       }
       
@@ -130,10 +140,30 @@ function createGrid(rows, cols){
   return newGrid;
 }
 
-function showGrid(){
+// takes the neighbouring hole and gem amounts and displays them in their cell
+function displayNumbers(){
   for (let y = 0; y<GRID_SIZE; y++) {
     for (let x = 0; x<GRID_SIZE; x++){
       
+      // Display based on state!
+      if (grid[y][x] === EMPTY_TILE || grid[y][x] === GEM){
+        textStyle(BOLD);
+        fill("red"); 
+        text(holeGrid[y][x], x*cellSize + cellSize/4, y*cellSize + cellSize/4);
+        fill("lime");
+        text(gemGrid[y][x], x*cellSize + 3*cellSize/4, y*cellSize +  3*cellSize/4);
+      }
+      noFill();
+      textAlign(CENTER, CENTER);
+    }
+  }
+}
+
+//Display the grid with images based on cell state 
+function showGrid(){
+  for (let y = 0; y<GRID_SIZE; y++) {
+    for (let x = 0; x<GRID_SIZE; x++){
+      displayNumbers();
       // Display based on state!
       if (grid[y][x] === HOLE){
         image(floorTile, x*cellSize, y*cellSize, cellSize, cellSize);
@@ -141,30 +171,19 @@ function showGrid(){
       }
       if (grid[y][x] === EMPTY_TILE){
         image(floorTile, x*cellSize, y*cellSize, cellSize, cellSize);
-        textStyle(BOLD);
-          fill("red"); 
-          text(holeGrid[y][x], x*cellSize - 3*cellSize/4, y*cellSize - 3*cellSize/4);
-          fill("lime");
-          text(gemGrid[y][x], x*cellSize - cellSize/4, y*cellSize - cellSize/4);
         
       }
       if(grid[y][x] === GEM){
         image(floorTile, x*cellSize, y*cellSize, cellSize, cellSize);
         image(theGem, x*cellSize, y*cellSize, cellSize, cellSize); 
-          fill("red");
-          text(holeGrid[y][x], x*cellSize - 3*cellSize/4, y*cellSize - 3*cellSize/4);
-     
-          fill("lime");
-          text(gemGrid[y][x], x*cellSize - cellSize/4, y*cellSize - cellSize/4);
-        
       }
       noFill();
       rect(x*cellSize, y*cellSize, cellSize, cellSize);
-      textAlign(CENTER, CENTER);
     }
   }
 }
 
+//Store the cover in a separate array
 function createCoveringGrid(rows, cols){
   let newCoveringGrid = []; 
   for (let y = 0; y < cols; y++){
@@ -176,26 +195,27 @@ function createCoveringGrid(rows, cols){
   return newCoveringGrid;
 }
 
-
+//Display the mask or add a flag
 function showCoveringGrid(){
   for (let y = 0; y<GRID_SIZE; y++) {
     for (let x = 0; x<GRID_SIZE; x++){
-      if (coveringGrid[y][x] === MASK){
+      if (coveringGrid[y][x] === MASK && coveringGrid[y][x] !== FLAG){
         fill("lightgray"); 
+        rect(x*cellSize, y*cellSize, cellSize, cellSize);
       }
       else if (coveringGrid[y][x] === FLAG){
         fill("lightgray");
+        rect(x*cellSize, y*cellSize, cellSize, cellSize);
         image(theFlag, x*cellSize, y*cellSize, cellSize, cellSize);
       }
-      else if (coveringGrid[y][x] !== MASK && coveringGrid[y][x] !== FLAG) {
+      else {
         noFill(); 
       }
-      rect(x*cellSize, y*cellSize, cellSize, cellSize);
     }
   }
 }
 
-
+// Takes mouse input
 function mousePressed() {
   if (state === "running") {
 
@@ -207,7 +227,7 @@ function mousePressed() {
       if (grid[y][x] === EMPTY_TILE || grid[y][x] === GEM){
         toggleCell(x, y);
       }
-      if (grid[y][x] === HOLE){
+      if (grid[y][x] === HOLE && coveringGrid[y][x] !== FLAG){
         toggleCell(x, y); 
         slipSound.play();
         state = "lost";
@@ -218,16 +238,17 @@ function mousePressed() {
       if (coveringGrid[y][x] === GEM ){
         grid[y][x] = EMPTY_TILE;
         gemCounter += 1;
+        pickUp.play();
       }
       // Place flag
       if (coveringGrid[y][x] === MASK){
         coveringGrid[y][x] = FLAG;
-  
       }
     }
   }
 }
 
+//removes the cover from a cell 
 function toggleCell(x, y) {
   //make sure the cell you're toggling is in the grid
   if (x >= 0 && y >= 0 && x < GRID_SIZE && y < GRID_SIZE) {
@@ -237,7 +258,7 @@ function toggleCell(x, y) {
   }
 }
 
-
+//uncover the entire grid
 function keyPressed(){
   if (key === "u"){
     for (let y = 0; y<GRID_SIZE; y++) {
@@ -248,6 +269,7 @@ function keyPressed(){
   }
 }
 
+//Count neighbouring gems
 function countGems(rows, cols, theGrid){
   let newGemGrid = []; 
   for (let y = 0; y < cols; y++){
@@ -271,6 +293,7 @@ function countGems(rows, cols, theGrid){
   return newGemGrid;
 }
 
+//Count neighbouring holes
 function countHoles(rows, cols, theGrid){
   let newHoleGrid = []; 
   for (let y = 0; y < cols; y++){
