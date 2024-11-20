@@ -16,6 +16,7 @@
 - [Character Grid Demo](Character.grid.demo/)
 - [OOP Walker Demo](oop.walker.demo)
 - [Fireworks OOP Demo](fireworks.oop)
+- [Connected Node Demo](connected.node.demo)
 
 
 ## Projects 
