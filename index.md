@@ -15,6 +15,7 @@
 - [Rectangle Grid Demo](rect.grid.demo) 
 - [Character Grid Demo](Character.grid.demo/)
 - [OOP Walker Demo](oop.walker.demo)
+- [Fireworks OOP Demo](fireworks.oop)
 
 
 ## Projects 
