@@ -18,6 +18,7 @@
 - [Fireworks OOP Demo](fireworks.oop)
 - [Connected Node Demo](connected.node.demo)
 - [Additional Libraries Demo](more.libraries.demo)
+- [Local Storage Demo](local.storage.demo)
 
 
 ## Projects 
