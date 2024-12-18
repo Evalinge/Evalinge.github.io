@@ -20,6 +20,8 @@
 - [Additional Libraries Demo](more.libraries.demo)
 - [Local Storage Demo](local.storage.demo)
 - [OOP Inheritance Demo](oop.inheritance.demo)
+- [Fractal Circles](fractal.circle)
+- [Sierpinski Triangle](sierpinski.triangle)
 
 
 ## Projects 
