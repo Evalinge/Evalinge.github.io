@@ -19,8 +19,7 @@
 - [Connected Node Demo](connected.node.demo)
 - [Additional Libraries Demo](more.libraries.demo)
 - [Local Storage Demo](local.storage.demo)
-- [OOP Inheritance Demo](oop.inheritance.demo
-)
+- [OOP Inheritance Demo](oop.inheritance.demo)
 
 
 ## Projects 
